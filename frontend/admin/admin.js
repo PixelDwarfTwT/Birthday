@@ -267,7 +267,7 @@ async function loadSettings() {
     };
 
     const recipient = String(readSetting(settings.public_recipient_name, config.DEFAULT_RECIPIENT_NAME) || config.DEFAULT_RECIPIENT_NAME).trim();
-    document.getElementById('setting-recipient').value = /^(our dear friend|friend)$/i.test(recipient) ? config.DEFAULT_RECIPIENT_NAME : recipient;
+    document.getElementById('setting-recipient').value = /^(our dear friend|friend|test(?:ing)?)$/i.test(recipient) ? config.DEFAULT_RECIPIENT_NAME : recipient;
     document.getElementById('setting-theme').value = readSetting(settings.public_theme, config.DEFAULT_THEME);
     const guestbookEnabled = readSetting(settings.public_enable_guestbook, config.ENABLE_GUESTBOOK);
     document.getElementById('setting-guestbook').checked = guestbookEnabled === true || guestbookEnabled === 'true';

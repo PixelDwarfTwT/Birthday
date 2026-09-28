@@ -29,7 +29,7 @@ async function init() {
     // Apply defaults if missing
     if (!settings.public_theme) settings.public_theme = config.DEFAULT_THEME;
     const currentRecipient = String(settings.public_recipient_name || '').replace(/^['"]|['"]$/g, '').trim();
-    if (!currentRecipient || /^(our dear friend|friend)$/i.test(currentRecipient)) {
+    if (!currentRecipient || /^(our dear friend|friend|test(?:ing)?)$/i.test(currentRecipient)) {
         settings.public_recipient_name = config.DEFAULT_RECIPIENT_NAME;
     }
     
