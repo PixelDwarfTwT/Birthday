@@ -93,3 +93,31 @@ body.theme-midnight button {
 .theme-btn[data-theme="scrapbook"] { background: #f59e0b; }
 .theme-btn[data-theme="pastel-party"] { background: #2dd4bf; }
 .theme-btn[data-theme="midnight"] { background: #0f172a; border-color: #475569; }
+
+/* Shared photo-collage wallpaper; each theme keeps its own color wash. */
+body.theme-flower-field { --wallpaper-wash: rgba(255, 247, 251, 0.42); }
+body.theme-blue-dream { --wallpaper-wash: rgba(239, 246, 255, 0.46); }
+body.theme-scrapbook { --wallpaper-wash: rgba(255, 251, 235, 0.44); }
+body.theme-pastel-party { --wallpaper-wash: rgba(240, 253, 250, 0.44); }
+body.theme-midnight { --wallpaper-wash: rgba(15, 23, 42, 0.5); }
+
+body[class*="theme-"] {
+    position: relative;
+    isolation: isolate;
+    background: transparent !important;
+    animation: none !important;
+}
+
+body[class*="theme-"]::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+        linear-gradient(var(--wallpaper-wash, rgba(255, 247, 251, 0.42)), var(--wallpaper-wash, rgba(255, 247, 251, 0.42))),
+        url("../assets/background-collage.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
