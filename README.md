@@ -56,4 +56,16 @@ Buka `http://localhost:8000/` untuk situs utama atau `http://localhost:8000/admi
 
 ## Deployment
 
-Deploy folder `frontend` ke GitHub Pages, Vercel, atau Netlify. Pastikan folder tersebut dipilih sebagai root deployment.
+Situs dipublikasikan melalui GitHub Pages: <https://pixeldwarftwt.github.io/Birthday/>. Sumber Pages adalah branch `main`, folder `/docs`.
+
+Folder `docs` merupakan salinan siap-publikasi dari `frontend`. Setelah mengubah situs, sinkronkan salinannya dari root repositori dengan PowerShell:
+
+```powershell
+Get-ChildItem frontend -Force | Copy-Item -Destination docs -Recurse -Force
+New-Item -ItemType File docs/.nojekyll -Force | Out-Null
+git add frontend docs
+git commit -m "Update birthday site"
+git push
+```
+
+Perubahan pada `docs` akan diterbitkan GitHub Pages setelah di-push ke branch `main`.

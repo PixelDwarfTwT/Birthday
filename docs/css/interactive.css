@@ -1,0 +1,202 @@
+/* --- CSS CAKE --- */
+.cake-container {
+    position: relative;
+    width: 250px;
+    height: 180px;
+    margin: 40px auto 60px;
+}
+
+.css-cake {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    background-color: #fca5a5; /* strawberry */
+    border-radius: 10px 10px 0 0;
+    box-shadow: inset 0 -15px rgba(0,0,0,0.1), inset 0 10px #fecaca;
+    z-index: 2;
+}
+
+.cake-plate {
+    position: absolute;
+    bottom: -15px;
+    left: -25px;
+    width: 300px;
+    height: 30px;
+    background: #e2e8f0;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.css-icing {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 35px;
+    background: #fff;
+    border-radius: 10px 10px 20px 20px;
+    box-shadow: 0 4px rgba(0,0,0,0.05);
+}
+
+.css-icing::before, .css-icing::after {
+    content: "";
+    position: absolute;
+    background: #fff;
+    border-radius: 0 0 20px 20px;
+}
+.css-icing::before {
+    width: 40px; height: 55px; left: 30px;
+}
+.css-icing::after {
+    width: 50px; height: 65px; right: 40px; top: 0;
+}
+
+.css-candles {
+    position: absolute;
+    top: -55px;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0 30px;
+}
+
+.css-candle {
+    width: 14px;
+    height: 65px;
+    background: repeating-linear-gradient(45deg, #fff, #fff 5px, #f472b6 5px, #f472b6 10px);
+    border-radius: 3px;
+    position: relative;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.css-flame {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 25px;
+    background: #fbbf24;
+    border-radius: 50% 50% 20% 20%;
+    box-shadow: 0 0 15px #fbbf24, 0 0 25px #f59e0b;
+    animation: flicker 0.5s infinite alternate;
+}
+
+@keyframes flicker {
+    0% { transform: translateX(-50%) scale(1); opacity: 0.9; }
+    100% { transform: translateX(-50%) scale(1.1); opacity: 1; }
+}
+
+
+/* --- 3D GIFT BOX --- */
+.gift-container {
+    perspective: 800px;
+    width: 200px;
+    height: 200px;
+    margin: 50px auto;
+}
+
+.gift-box-3d {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateX(-15deg) rotateY(25deg);
+    transition: transform 0.5s ease;
+    cursor: pointer;
+}
+
+.gift-box-3d:hover:not(.opened) {
+    transform: rotateX(-15deg) rotateY(45deg);
+}
+
+.gift-face {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: #ec4899;
+    border: 1px solid #db2777;
+    top: 25px;
+    left: 25px;
+}
+
+/* Ribbons on box body */
+.gift-face::after {
+    content: "";
+    position: absolute;
+    background: #fdf2f8; 
+}
+.gift-face:not(.top):not(.bottom)::after {
+    width: 24px;
+    height: 100%;
+    left: 63px;
+    top: 0;
+}
+
+.gift-face.front  { transform: translateZ(75px); }
+.gift-face.back   { transform: rotateY(180deg) translateZ(75px); }
+.gift-face.right  { transform: rotateY(90deg) translateZ(75px); }
+.gift-face.left   { transform: rotateY(-90deg) translateZ(75px); }
+.gift-face.bottom { transform: rotateX(-90deg) translateZ(75px); background: #be185d; box-shadow: 0 0 40px rgba(0,0,0,0.4);}
+
+/* Lid */
+.gift-lid {
+    position: absolute;
+    width: 160px;
+    height: 40px;
+    top: 20px;
+    left: 20px;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s ease;
+    z-index: 10;
+}
+
+.lid-face {
+    position: absolute;
+    background: #f472b6;
+    border: 1px solid #db2777;
+}
+
+.lid-face.top { 
+    width: 160px; height: 160px; 
+    transform: rotateX(90deg) translateZ(20px); 
+    top: -60px; left: 0; 
+}
+.lid-face.front { width: 160px; height: 40px; transform: translateZ(80px); }
+.lid-face.back  { width: 160px; height: 40px; transform: rotateY(180deg) translateZ(80px); }
+.lid-face.left  { width: 160px; height: 40px; transform: rotateY(-90deg) translateZ(80px); }
+.lid-face.right { width: 160px; height: 40px; transform: rotateY(90deg) translateZ(80px); }
+
+/* Ribbons on lid */
+.lid-face:not(.top)::after {
+    content: ""; position: absolute; background: #fdf2f8;
+    width: 24px; height: 100%; left: 68px; top: 0;
+}
+.lid-face.top::after {
+    content: ""; position: absolute; background: #fdf2f8;
+    width: 24px; height: 100%; left: 68px; top: 0;
+}
+.lid-face.top::before {
+    content: ""; position: absolute; background: #fdf2f8;
+    width: 100%; height: 24px; top: 68px; left: 0;
+}
+.ribbon-bow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px; height: 60px;
+    background: radial-gradient(circle, transparent 20px, #fdf2f8 21px);
+    border-radius: 50%;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 40%, 40% 50%, 0 60%);
+    z-index: 5;
+}
+
+/* Opened state */
+.gift-box-3d.opened .gift-lid {
+    transform: translateY(-120px) translateX(50px) rotateX(60deg) rotateY(30deg) rotateZ(10deg);
+    opacity: 0;
+}
+.gift-box-3d.opened {
+    transform: rotateX(-5deg) rotateY(0deg) scale(0.95);
+}
