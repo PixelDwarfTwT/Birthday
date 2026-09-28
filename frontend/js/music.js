@@ -12,13 +12,19 @@ export function initMusicPlayer() {
     const trackName = document.getElementById('music-track-name');
     const status = document.getElementById('music-status');
     const spotifyPlayer = document.getElementById('spotify-player');
+    const spotifyMount = document.getElementById('spotify-player-embed');
     const musicDock = document.getElementById('music-dock');
     const collapseButton = document.getElementById('music-collapse');
     const reopenButton = document.getElementById('music-reopen');
 
-    if (!audio || !toggle || !fileInput || !urlForm || !urlInput || !resetButton || !spotifyPlayer || !musicDock || !collapseButton || !reopenButton) return;
+    if (!audio || !toggle || !fileInput || !urlForm || !urlInput || !resetButton || !spotifyPlayer || !spotifyMount || !musicDock || !collapseButton || !reopenButton) return;
 
     let objectUrl = null;
+    let spotifyController = null;
+    let spotifyApiRequested = false;
+    let currentSpotifyUri = '';
+    let spotifyPlaybackStarted = false;
+    let spotifyAttemptId = 0;
     const defaultUrl = (config.DEFAULT_MUSIC_URL || '').trim();
 
     function collapseMusicDock() {
@@ -62,6 +68,103 @@ export function initMusicPlayer() {
         objectUrl = null;
     }
 
+    function stopGestureRetries() {
+        document.removeEventListener('pointerdown', retryPlaybackFromGesture, true);
+        document.removeEventListener('keydown', retryPlaybackFromGesture, true);
+    }
+
+    function retryPlaybackFromGesture() {
+        if (currentSpotifyUri && spotifyController) {
+            requestSpotifyPlayback();
+        } else if (!currentSpotifyUri && audio.hasAttribute('src') && audio.paused) {
+            attemptAudioPlayback();
+        }
+    }
+
+    async function attemptAudioPlayback() {
+        try {
+            await audio.play();
+        } catch (error) {
+            if (error?.name === 'NotAllowedError') {
+                status.textContent = 'Browser memblokir putar otomatis. Lagu akan dicoba lagi saat kamu menyentuh halaman; jika belum berbunyi, tekan Putar.';
+            } else {
+                status.textContent = 'Lagu tidak dapat diputar. Periksa file atau tautan audionya.';
+            }
+        }
+    }
+
+    function requestSpotifyPlayback() {
+        if (!spotifyController || !currentSpotifyUri) return;
+        const attemptId = ++spotifyAttemptId;
+        spotifyPlaybackStarted = false;
+        status.textContent = 'Mencoba memutar lagu otomatis melalui Spotify...';
+        try {
+            spotifyController.play();
+        } catch {
+            status.textContent = 'Spotify belum dapat memutar otomatis. Gunakan tombol putar pada pemutar Spotify.';
+        }
+        window.setTimeout(() => {
+            if (attemptId === spotifyAttemptId && !spotifyPlaybackStarted) {
+                status.textContent = 'Jika lagu belum berbunyi, browser mungkin memblokir autoplay. Sentuh halaman atau tekan tombol putar Spotify.';
+            }
+        }, 3000);
+    }
+
+    function showStaticSpotifyEmbed() {
+        const trackId = currentSpotifyUri.split(':').pop();
+        if (!trackId) return;
+        const iframe = document.createElement('iframe');
+        iframe.title = 'Pemutar lagu Spotify';
+        iframe.src = `https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0`;
+        iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+        iframe.loading = 'lazy';
+        iframe.style.cssText = 'display:block;width:100%;height:152px;border:0;border-radius:0.8rem';
+        spotifyMount.replaceChildren(iframe);
+        status.textContent = 'Spotify tidak dapat memulai otomatis. Tekan tombol putar pada pemutar Spotify.';
+    }
+
+    function createSpotifyController(IFrameAPI) {
+        if (!currentSpotifyUri || spotifyController) return;
+        spotifyMount.replaceChildren();
+        IFrameAPI.createController(spotifyMount, {
+            uri: currentSpotifyUri,
+            width: '100%',
+            height: '152'
+        }, (controller) => {
+            spotifyController = controller;
+            controller.addListener('playback_started', () => {
+                spotifyPlaybackStarted = true;
+                status.textContent = 'Sedang diputar melalui Spotify.';
+                stopGestureRetries();
+            });
+            if (currentSpotifyUri) {
+                controller.loadUri(currentSpotifyUri);
+                requestSpotifyPlayback();
+            }
+        });
+    }
+
+    function loadSpotifyIframeApi() {
+        if (spotifyApiRequested || spotifyController) return;
+        spotifyApiRequested = true;
+        window.onSpotifyIframeApiReady = (IFrameAPI) => {
+            spotifyApiRequested = false;
+            createSpotifyController(IFrameAPI);
+        };
+
+        const script = document.createElement('script');
+        script.src = 'https://open.spotify.com/embed/iframe-api/v1';
+        script.async = true;
+        script.onerror = () => {
+            spotifyApiRequested = false;
+            if (currentSpotifyUri && !spotifyController) showStaticSpotifyEmbed();
+        };
+        document.head.appendChild(script);
+    }
+
+    document.addEventListener('pointerdown', retryPlaybackFromGesture, true);
+    document.addEventListener('keydown', retryPlaybackFromGesture, true);
+
     function getSpotifyTrackId(source) {
         try {
             const url = new URL(source, window.location.href);
@@ -77,18 +180,26 @@ export function initMusicPlayer() {
         releaseObjectUrl();
         const spotifyTrackId = getSpotifyTrackId(source);
         if (spotifyTrackId) {
+            currentSpotifyUri = `spotify:track:${spotifyTrackId}`;
             audio.removeAttribute('src');
             audio.load();
-            spotifyPlayer.src = `https://open.spotify.com/embed/track/${spotifyTrackId}?utm_source=generator&theme=0`;
             spotifyPlayer.hidden = false;
             toggle.hidden = true;
             toggle.disabled = true;
             trackName.textContent = name;
-            status.textContent = 'Putar lagu melalui pemutar Spotify.';
+            status.textContent = 'Mencoba memutar lagu otomatis melalui Spotify...';
+            if (spotifyController) {
+                spotifyController.loadUri(currentSpotifyUri);
+                requestSpotifyPlayback();
+            } else {
+                loadSpotifyIframeApi();
+            }
             return;
         }
 
-        spotifyPlayer.removeAttribute('src');
+        currentSpotifyUri = '';
+        spotifyAttemptId += 1;
+        try { spotifyController?.pause(); } catch { /* Keep audio selection usable if Spotify is unavailable. */ }
         spotifyPlayer.hidden = true;
         toggle.hidden = false;
         audio.src = source;
@@ -97,7 +208,8 @@ export function initMusicPlayer() {
         trackName.textContent = name;
         toggle.disabled = false;
         toggle.textContent = 'Putar';
-        status.textContent = 'Lagu siap. Tekan Putar untuk mulai mendengarkan.';
+        status.textContent = 'Mencoba memutar lagu otomatis...';
+        attemptAudioPlayback();
     }
 
     function getTrackName(source, fallback) {
@@ -117,11 +229,13 @@ export function initMusicPlayer() {
     }
 
     function clearTrack(message) {
+        currentSpotifyUri = '';
+        spotifyAttemptId += 1;
         audio.pause();
         audio.removeAttribute('src');
         audio.load();
         releaseObjectUrl();
-        spotifyPlayer.removeAttribute('src');
+        try { spotifyController?.pause(); } catch { /* Ignore unavailable Spotify controller. */ }
         spotifyPlayer.hidden = true;
         toggle.hidden = false;
         trackName.textContent = 'Belum ada lagu yang dipilih';
@@ -145,6 +259,7 @@ export function initMusicPlayer() {
     audio.addEventListener('play', () => {
         toggle.textContent = 'Jeda';
         status.textContent = 'Sedang diputar';
+        stopGestureRetries();
     });
     audio.addEventListener('pause', () => {
         toggle.textContent = 'Putar';
