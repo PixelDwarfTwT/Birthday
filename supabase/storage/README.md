@@ -1,25 +1,9 @@
-# Storage Setup
+# Supabase Storage untuk galeri
 
-1. In Supabase Dashboard, go to Storage.
-2. Create a new bucket named `gallery`.
-3. Set the bucket to "Public".
-4. Go to SQL Editor and run the following to set up RLS for storage (Optional if you just use the UI policies, but recommended):
+1. Di Supabase Dashboard, buka **Storage**.
+2. Buat bucket bernama `gallery` dan atur sebagai **Public** agar foto terbit dapat dibuka di situs.
+3. Jalankan `supabase/migrations/002_gallery_storage_policies.sql` melalui **SQL Editor**.
 
-```sql
--- Allow public to read published images
-CREATE POLICY "Public can view published gallery objects"
-ON storage.objects FOR SELECT
-USING (
-    bucket_id = 'gallery' AND
-    EXISTS (
-        SELECT 1 FROM gallery_items
-        WHERE gallery_items.storage_path = storage.objects.name
-        AND gallery_items.published = true
-    )
-);
+Kebijakan tersebut hanya mengizinkan akun yang UID-nya tercatat di `public.admin_users` untuk mengunggah, melihat metadata, mengubah, dan menghapus objek di bucket `gallery`. Kebijakan SELECT untuk admin diperlukan agar Supabase dapat mengembalikan metadata objek setelah upload. Pengunjung hanya dapat membaca objek yang memiliki baris galeri berstatus terbit.
 
--- Allow admins to upload, update, delete
-CREATE POLICY "Admins can manage gallery objects"
-ON storage.objects FOR ALL
-USING (bucket_id = 'gallery' AND is_admin());
-```
+Jika upload masih ditolak, pastikan akun yang dipakai masuk ke Supabase Auth dan UID yang sama sudah ditambahkan ke `public.admin_users`. Login saja tidak memberi hak admin.

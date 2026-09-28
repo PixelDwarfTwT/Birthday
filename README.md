@@ -16,9 +16,9 @@ Situs perayaan ulang tahun yang responsif dan interaktif, dengan Supabase untuk 
 
 1. Buat project di [Supabase](https://supabase.com).
 2. Buka SQL Editor, lalu jalankan `supabase/migrations/001_initial_schema.sql`.
-3. Jalankan `supabase/seed.sql` jika ingin memasukkan contoh surat dan voucher.
-4. Di Storage, buat bucket bernama `gallery` dan jadikan publik.
-5. Jalankan kebijakan storage dari `supabase/storage/README.md` di SQL Editor.
+3. Di Storage, buat bucket bernama `gallery` dan jadikan publik.
+4. Buka SQL Editor dan jalankan `supabase/migrations/002_gallery_storage_policies.sql`.
+5. Jalankan `supabase/seed.sql` jika ingin memasukkan contoh surat dan voucher.
 
 ## Membuat akun admin
 
@@ -29,6 +29,8 @@ Situs perayaan ulang tahun yang responsif dan interaktif, dengan Supabase untuk 
    ```sql
    INSERT INTO admin_users (user_id) VALUES ('YOUR_USER_UID_HERE');
    ```
+
+Login saja belum memberi izin admin. UID akun yang dipakai untuk login harus tercatat di tabel `admin_users` agar unggah dan pengelolaan galeri diizinkan oleh RLS.
 
 ## Konfigurasi frontend
 
