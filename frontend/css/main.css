@@ -468,6 +468,8 @@ button:focus-visible, input:focus-visible, summary:focus-visible, .gift-box-3d:f
 .music-settings__body form button { background: var(--primary-color); }
 .music-reset-btn { padding-left: 0; background: transparent; color: var(--text-color); box-shadow: none; }
 .music-status { min-height: 1.2em; margin-top: 0.5rem; color: color-mix(in srgb, var(--text-color) 68%, transparent); font-size: 0.72rem; }
+.spotify-player { display: block; width: 100%; height: 152px; margin-top: 0.7rem; border: 0; border-radius: 0.8rem; }
+.spotify-player[hidden] { display: none; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
 .center-flex {

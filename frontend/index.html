@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#fff7fb">
-    <meta name="description" content="A little interactive birthday celebration, made just for you.">
-    <title>Happy Birthday!</title>
+    <meta name="description" content="Perayaan ulang tahun interaktif yang dibuat khusus untukmu.">
+    <title>Selamat Ulang Tahun!</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,21 +19,21 @@
     <main id="app-container">
         <section id="intro-section" class="page-section active" aria-labelledby="intro-title">
             <div class="page-content center-flex">
-                <p class="celebration-eyebrow">A little celebration, made just for you</p>
-                <h1 id="intro-title">Happy Birthday,<br><span class="recipient-name">Friend</span>!</h1>
-                <p class="intro-copy">Welcome to your special birthday celebration!</p>
+                <p class="celebration-eyebrow">Perayaan kecil yang dibuat khusus untukmu</p>
+                <h1 id="intro-title">Selamat Ulang Tahun,<br><span class="recipient-name">Fitri Ramadani Arif (Mba Pit)</span>!</h1>
+                <p class="intro-copy">Semoga hari spesialmu dipenuhi kebahagiaan!</p>
 
-                <div id="balloon-container" aria-label="Pop the balloons for fun"></div>
-                <p id="balloon-score" aria-live="polite">Score: 0</p>
+                <div id="balloon-container" aria-label="Pecahkan balon untuk bermain"></div>
+                <p id="balloon-score" aria-live="polite">Skor: 0</p>
 
-                <button class="nav-btn next-btn intro-start">Start Celebration <span aria-hidden="true">&rarr;</span></button>
+                <button class="nav-btn next-btn intro-start" type="button">Mulai Perayaan <span aria-hidden="true">&rarr;</span></button>
             </div>
         </section>
 
         <section id="cake-section" class="page-section" aria-labelledby="cake-title">
             <div class="page-content center-flex">
-                <h2 id="cake-title">The Birthday Cake</h2>
-                <div class="cake-container" aria-label="Birthday cake with three candles">
+                <h2 id="cake-title">Kue Ulang Tahun</h2>
+                <div class="cake-container" aria-label="Kue ulang tahun dengan tiga lilin">
                     <div class="cake-plate"></div>
                     <div class="css-cake">
                         <div class="css-icing"></div>
@@ -47,23 +47,23 @@
 
                 <p id="cake-message" class="hidden cake-message"></p>
                 <div class="candle-actions">
-                    <button id="btn-mic-permission" type="button">Use microphone</button>
-                    <button id="btn-manual-blow" class="manual-blow-btn" type="button">Blow manually</button>
+                    <button id="btn-mic-permission" type="button">Tiup dengan mikrofon</button>
+                    <button id="btn-manual-blow" class="manual-blow-btn" type="button">Tiup lilin</button>
                 </div>
-                <p class="privacy-note">Microphone access is only used to detect a blow. No audio is recorded.</p>
+                <p class="privacy-note">Mikrofon hanya digunakan untuk mendeteksi tiupan. Tidak ada audio yang direkam.</p>
 
                 <div class="page-nav">
-                    <button class="nav-btn prev-btn secondary-btn" type="button">&larr; Back</button>
-                    <button class="nav-btn next-btn" type="button">Open Gift &rarr;</button>
+                    <button class="nav-btn prev-btn secondary-btn" type="button">&larr; Kembali</button>
+                    <button class="nav-btn next-btn" type="button">Buka Hadiah &rarr;</button>
                 </div>
             </div>
         </section>
 
         <section id="gift-section" class="page-section" aria-labelledby="gift-title">
             <div class="page-content center-flex">
-                <h2 id="gift-title">Your Gift</h2>
+                <h2 id="gift-title">Hadiah Untukmu</h2>
                 <div class="gift-container">
-                    <div class="gift-box-3d" id="interactive-gift" tabindex="0" role="button" aria-label="Open your birthday gift">
+                    <div class="gift-box-3d" id="interactive-gift" tabindex="0" role="button" aria-label="Buka hadiah ulang tahunmu">
                         <div class="gift-face front"></div>
                         <div class="gift-face back"></div>
                         <div class="gift-face left"></div>
@@ -78,76 +78,77 @@
                         </div>
                     </div>
                 </div>
-                <p class="gift-hint">Click the box to open it!</p>
+                <p class="gift-hint">Klik kotaknya untuk membuka hadiah!</p>
 
                 <div id="surprise-content" class="hidden surprise-content">
-                    <h3>Your birthday vouchers</h3>
-                    <div id="vouchers-grid">Loading vouchers...</div>
+                    <h3>Voucher Ulang Tahunmu</h3>
+                    <div id="vouchers-grid">Memuat voucher...</div>
                 </div>
 
                 <div class="page-nav">
-                    <button class="nav-btn prev-btn secondary-btn" type="button">&larr; Back</button>
-                    <button class="nav-btn next-btn" type="button">Read Letters &rarr;</button>
+                    <button class="nav-btn prev-btn secondary-btn" type="button">&larr; Kembali</button>
+                    <button class="nav-btn next-btn" type="button">Baca Surat &rarr;</button>
                 </div>
             </div>
         </section>
 
         <section id="letters-section" class="page-section" aria-labelledby="letters-title">
             <div class="page-content">
-                <h2 id="letters-title">Letters for You</h2>
-                <div id="letters-grid">Loading letters...</div>
+                <h2 id="letters-title">Surat Untukmu</h2>
+                <div id="letters-grid">Memuat surat...</div>
                 <div class="page-nav">
-                    <button class="nav-btn prev-btn secondary-btn" type="button">&larr; Back</button>
-                    <button class="nav-btn next-btn" type="button">View Gallery &rarr;</button>
+                    <button class="nav-btn prev-btn secondary-btn" type="button">&larr; Kembali</button>
+                    <button class="nav-btn next-btn" type="button">Lihat Galeri &rarr;</button>
                 </div>
             </div>
         </section>
 
         <section id="gallery-section" class="page-section" aria-labelledby="gallery-title">
             <div class="page-content">
-                <h2 id="gallery-title">Photo Gallery</h2>
-                <div id="gallery-grid">Loading gallery...</div>
+                <h2 id="gallery-title">Galeri Foto</h2>
+                <div id="gallery-grid">Memuat galeri...</div>
                 <div class="page-nav page-nav-center">
-                    <button class="nav-btn prev-btn secondary-btn" type="button">&larr; Back</button>
-                    <button id="btn-share" type="button">Share this website</button>
+                    <button class="nav-btn prev-btn secondary-btn" type="button">&larr; Kembali</button>
+                    <button id="btn-share" type="button">Bagikan Situs Ini</button>
                 </div>
             </div>
         </section>
 
-        <footer class="site-footer"><p>Made with love</p></footer>
+        <footer class="site-footer"><p>Dibuat dengan cinta</p></footer>
     </main>
 
-    <aside class="music-dock" aria-label="Birthday music player">
+    <aside class="music-dock" aria-label="Pemutar musik ulang tahun">
         <audio id="birthday-song" loop preload="metadata"></audio>
         <div class="music-dock__heading">
             <span class="music-note" aria-hidden="true">&#9835;</span>
             <div class="music-dock__track">
-                <strong>Birthday soundtrack</strong>
-                <p id="music-track-name">No song selected yet</p>
+                <strong>Lagu untuk Mba Pit</strong>
+                <p id="music-track-name">Belum ada lagu yang dipilih</p>
             </div>
         </div>
         <div class="music-dock__controls">
-            <button id="music-toggle" class="music-play-btn" type="button" disabled>Play</button>
+            <button id="music-toggle" class="music-play-btn" type="button" disabled>Putar</button>
             <details class="music-settings">
-                <summary>Change song</summary>
+                <summary>Ganti lagu</summary>
                 <div class="music-settings__body">
-                    <label class="music-file-label" for="music-file">Choose an audio file</label>
+                    <label class="music-file-label" for="music-file">Pilih file audio</label>
                     <input id="music-file" class="visually-hidden" type="file" accept="audio/*">
                     <form id="music-url-form">
-                        <label for="music-url">Or paste a direct audio link</label>
-                        <input id="music-url" type="url" placeholder="https://example.com/song.mp3" autocomplete="url">
-                        <button type="submit">Use link</button>
+                        <label for="music-url">Tautan Spotify atau audio langsung</label>
+                        <input id="music-url" type="url" placeholder="https://open.spotify.com/track/..." autocomplete="url">
+                        <button type="submit">Gunakan tautan</button>
                     </form>
-                    <button id="music-reset" class="music-reset-btn" type="button">Restore default song</button>
+                    <button id="music-reset" class="music-reset-btn" type="button">Pulihkan lagu bawaan</button>
                 </div>
             </details>
         </div>
-        <p id="music-status" class="music-status" aria-live="polite">Choose a song to get started.</p>
+        <p id="music-status" class="music-status" aria-live="polite">Putar lagu langsung dari Spotify.</p>
+        <iframe id="spotify-player" class="spotify-player" title="Putar Tawa oleh Nadin Amizah di Spotify" src="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" hidden></iframe>
     </aside>
 
     <div id="letter-modal" class="modal-overlay">
         <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="letter-title">
-            <button id="letter-close" class="close-btn" type="button" aria-label="Close letter">&times;</button>
+            <button id="letter-close" class="close-btn" type="button" aria-label="Tutup surat">&times;</button>
             <h2 id="letter-title" class="modal-title"></h2>
             <p id="letter-author" class="modal-author"></p>
             <div id="letter-body" class="modal-letter-body"></div>
@@ -155,8 +156,8 @@
     </div>
 
     <div id="lightbox-overlay" class="modal-overlay">
-        <div class="modal-content lightbox-content" role="dialog" aria-modal="true" aria-label="Photo viewer">
-            <button id="lightbox-close" class="close-btn lightbox-close" type="button" aria-label="Close image">&times;</button>
+        <div class="modal-content lightbox-content" role="dialog" aria-modal="true" aria-label="Penampil foto">
+            <button id="lightbox-close" class="close-btn lightbox-close" type="button" aria-label="Tutup foto">&times;</button>
             <img id="lightbox-img" src="" alt="">
             <p id="lightbox-caption"></p>
         </div>

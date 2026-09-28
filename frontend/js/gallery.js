@@ -7,7 +7,7 @@ export function renderGallery(items) {
     grid.innerHTML = '';
     
     if (items.length === 0) {
-        grid.innerHTML = '<p>No photos yet.</p>';
+        grid.innerHTML = '<p>Belum ada foto.</p>';
         return;
     }
     
@@ -21,7 +21,7 @@ export function renderGallery(items) {
         
         const img = document.createElement('img');
         img.src = url;
-        img.alt = item.alt_text || 'Gallery image';
+        img.alt = item.alt_text || 'Foto galeri';
         img.loading = 'lazy';
         img.style.width = '100%';
         img.style.height = '200px';

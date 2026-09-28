@@ -1,4 +1,5 @@
 import { supabase } from '../js/supabase.js';
+import { config } from '../js/config.js';
 import * as lettersApi from '../js/api/letters.api.js';
 import * as galleryApi from '../js/api/gallery.api.js';
 import * as vouchersApi from '../js/api/vouchers.api.js';
@@ -41,7 +42,7 @@ loginForm.addEventListener('submit', async (e) => {
     const errorEl = document.getElementById('login-error');
     
     const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) errorEl.textContent = error.message;
+    if (error) errorEl.textContent = 'Gagal masuk. Periksa email, kata sandi, atau konfigurasi Supabase.';
     else errorEl.textContent = '';
 });
 
@@ -61,7 +62,7 @@ document.querySelectorAll('.admin-nav button').forEach(btn => {
     });
 });
 
-// Data Loading
+// Memuat data
 async function loadAllData() {
     loadLetters();
     loadGallery();
@@ -76,11 +77,11 @@ async function loadLetters() {
     list.innerHTML = letters.map(l => `
         <div class="item-row">
             <div>
-                <strong>${l.title}</strong> (${l.published ? 'Published' : 'Draft'})
+                <strong>${l.title}</strong> (${l.published ? 'Ditampilkan' : 'Draf'})
             </div>
             <div class="item-actions">
-                <button onclick="editLetter('${l.id}')">Edit</button>
-                <button class="btn-danger" onclick="deleteLetter('${l.id}')">Delete</button>
+                <button onclick="editLetter('${l.id}')">Ubah</button>
+                <button class="btn-danger" onclick="deleteLetter('${l.id}')">Hapus</button>
             </div>
         </div>
     `).join('');
@@ -101,7 +102,7 @@ window.editLetter = (id) => {
 };
 
 window.deleteLetter = async (id) => {
-    if (confirm('Delete this letter?')) {
+    if (confirm('Hapus surat ini?')) {
         await lettersApi.deleteLetter(id);
         loadLetters();
     }
@@ -144,17 +145,17 @@ async function loadGallery() {
         <div class="item-row">
             <div style="display:flex; align-items:center; gap: 10px;">
                 <img src="${galleryApi.getImageUrl(i.storage_path)}" style="width:50px; height:50px; object-fit:cover; border-radius:4px;">
-                <strong>${i.caption || i.alt_text}</strong> (${i.published ? 'Published' : 'Draft'})
+                <strong>${i.caption || i.alt_text}</strong> (${i.published ? 'Ditampilkan' : 'Draf'})
             </div>
             <div class="item-actions">
-                <button class="btn-danger" onclick="deleteGallery('${i.id}', '${i.storage_path}')">Delete</button>
+                <button class="btn-danger" onclick="deleteGallery('${i.id}', '${i.storage_path}')">Hapus</button>
             </div>
         </div>
     `).join('');
 }
 
 window.deleteGallery = async (id, path) => {
-    if (confirm('Delete this image?')) {
+    if (confirm('Hapus foto ini?')) {
         await galleryApi.deleteGalleryItem(id, path);
         loadGallery();
     }
@@ -171,7 +172,7 @@ document.getElementById('form-gallery').addEventListener('submit', async (e) => 
     
     // Simplification for vanilla: we only create, not edit image metadata here.
     if (!file) {
-        alert("Please select a file.");
+        alert("Silakan pilih file foto.");
         return;
     }
     
@@ -180,7 +181,7 @@ document.getElementById('form-gallery').addEventListener('submit', async (e) => 
         document.getElementById('form-gallery').reset();
         loadGallery();
     } catch (err) {
-        alert("Error saving image: " + err.message);
+        alert("Gagal menyimpan foto: " + err.message);
     }
 });
 
@@ -191,11 +192,11 @@ async function loadVouchers() {
     list.innerHTML = items.map(v => `
         <div class="item-row">
             <div>
-                <strong>${v.title}</strong> (${v.published ? 'Published' : 'Draft'} | ${v.is_used ? 'Used' : 'Unused'})
+                <strong>${v.title}</strong> (${v.published ? 'Ditampilkan' : 'Draf'} | ${v.is_used ? 'Sudah digunakan' : 'Belum digunakan'})
             </div>
             <div class="item-actions">
-                <button onclick="editVoucher('${v.id}')">Edit</button>
-                <button class="btn-danger" onclick="deleteVoucher('${v.id}')">Delete</button>
+                <button onclick="editVoucher('${v.id}')">Ubah</button>
+                <button class="btn-danger" onclick="deleteVoucher('${v.id}')">Hapus</button>
             </div>
         </div>
     `).join('');
@@ -216,7 +217,7 @@ window.editVoucher = (id) => {
 };
 
 window.deleteVoucher = async (id) => {
-    if (confirm('Delete this voucher?')) {
+    if (confirm('Hapus voucher ini?')) {
         await vouchersApi.deleteVoucher(id);
         loadVouchers();
     }
@@ -255,9 +256,21 @@ document.getElementById('form-voucher').addEventListener('submit', async (e) => 
 async function loadSettings() {
     // Only loads public settings as per RLS
     const settings = await settingsApi.fetchPublicSettings();
-    if (settings.public_recipient_name) document.getElementById('setting-recipient').value = JSON.parse(settings.public_recipient_name);
-    if (settings.public_theme) document.getElementById('setting-theme').value = JSON.parse(settings.public_theme);
-    if (settings.public_enable_guestbook) document.getElementById('setting-guestbook').checked = JSON.parse(settings.public_enable_guestbook);
+    const readSetting = (value, fallback) => {
+        if (value === undefined || value === null) return fallback;
+        if (typeof value !== 'string') return value;
+        try {
+            return JSON.parse(value);
+        } catch {
+            return value;
+        }
+    };
+
+    const recipient = String(readSetting(settings.public_recipient_name, config.DEFAULT_RECIPIENT_NAME) || config.DEFAULT_RECIPIENT_NAME).trim();
+    document.getElementById('setting-recipient').value = /^(our dear friend|friend)$/i.test(recipient) ? config.DEFAULT_RECIPIENT_NAME : recipient;
+    document.getElementById('setting-theme').value = readSetting(settings.public_theme, config.DEFAULT_THEME);
+    const guestbookEnabled = readSetting(settings.public_enable_guestbook, config.ENABLE_GUESTBOOK);
+    document.getElementById('setting-guestbook').checked = guestbookEnabled === true || guestbookEnabled === 'true';
 }
 
 document.getElementById('form-settings').addEventListener('submit', async (e) => {
@@ -271,8 +284,8 @@ document.getElementById('form-settings').addEventListener('submit', async (e) =>
         await settingsApi.updateSetting('public_recipient_name', recipient);
         await settingsApi.updateSetting('public_theme', theme);
         await settingsApi.updateSetting('public_enable_guestbook', guestbook);
-        alert('Settings saved!');
+        alert('Pengaturan berhasil disimpan!');
     } catch (err) {
-        alert("Error saving settings. Make sure you have admin rights.");
+        alert("Gagal menyimpan pengaturan. Pastikan akunmu memiliki hak admin.");
     }
 });

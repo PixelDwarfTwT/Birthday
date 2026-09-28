@@ -5,10 +5,11 @@ export const config = {
     
     // Default safe public settings fallback
     DEFAULT_THEME: "flower-field",
-    DEFAULT_RECIPIENT_NAME: "Our Dear Friend",
-    DEFAULT_BIRTHDAY_DATE: "Today",
-    // Set to a relative path or public direct audio URL to share one default song.
-    DEFAULT_MUSIC_URL: "",
+    DEFAULT_RECIPIENT_NAME: "Fitri Ramadani Arif (Mba Pit)",
+    DEFAULT_BIRTHDAY_DATE: "Hari ini",
+    // Official Spotify embed for Nadin Amizah's "Tawa".
+    DEFAULT_MUSIC_URL: "https://open.spotify.com/track/2cUtg4hpCug4Gc9aibZIYV",
+    DEFAULT_MUSIC_TITLE: "Tawa - Nadin Amizah",
     
     // Enable/Disable features locally for testing
     ENABLE_GUESTBOOK: true

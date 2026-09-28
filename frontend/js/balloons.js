@@ -41,7 +41,7 @@ export function initBalloons() {
             balloon.classList.remove('floating');
             balloon.classList.add('popping');
             score++;
-            if (scoreDisplay) scoreDisplay.textContent = `Score: ${score}`;
+            if (scoreDisplay) scoreDisplay.textContent = `Skor: ${score}`;
             setTimeout(() => balloon.remove(), 300);
         });
 

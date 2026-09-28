@@ -14,7 +14,7 @@ export function initCandles() {
         isBlowing = true;
         candles.forEach(c => c.style.display = 'none');
         if (message) {
-            message.textContent = "Yay! Happy Birthday!";
+            message.textContent = "Yeay! Selamat ulang tahun!";
             message.classList.remove('hidden');
         }
         if (microphoneStream) {
@@ -33,7 +33,7 @@ export function initCandles() {
     micBtn.addEventListener('click', async () => {
         try {
             if (!navigator.mediaDevices?.getUserMedia) {
-                throw new Error('Microphone access is not available in this browser.');
+                throw new Error('Mikrofon tidak tersedia di peramban ini.');
             }
             microphoneStream = await navigator.mediaDevices.getUserMedia({ audio: true });
             const stream = microphoneStream;
@@ -70,8 +70,8 @@ export function initCandles() {
                 microphoneStream.getTracks().forEach(track => track.stop());
                 microphoneStream = null;
             }
-            console.error("Microphone access denied or not supported.", err);
-            alert("Microphone access denied. You can use the manual button instead.");
+            console.error("Akses mikrofon ditolak atau tidak didukung.", err);
+            alert("Mikrofon tidak dapat digunakan. Kamu tetap bisa meniup lilin dengan tombol manual.");
         }
     });
 }

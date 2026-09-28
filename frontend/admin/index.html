@@ -1,97 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Panel Admin</title>
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
     <div id="login-screen" class="login-container">
-        <h2>Admin Login</h2>
+        <h2>Masuk Admin</h2>
         <form id="login-form">
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button type="submit">Sign In</button>
+            <input type="email" id="email" placeholder="Alamat email" required>
+            <input type="password" id="password" placeholder="Kata sandi" required>
+            <button type="submit">Masuk</button>
             <p id="login-error" style="color: red;"></p>
         </form>
     </div>
 
     <div id="dashboard-screen" class="admin-container hidden">
         <div class="admin-header">
-            <h2>Dashboard</h2>
-            <button id="btn-logout" class="btn-danger">Sign Out</button>
+            <h2>Dasbor</h2>
+            <button id="btn-logout" class="btn-danger">Keluar</button>
         </div>
 
         <div class="admin-nav">
-            <button class="active" data-target="letters">Letters</button>
-            <button data-target="gallery">Gallery</button>
-            <button data-target="vouchers">Vouchers</button>
-            <button data-target="settings">Settings</button>
+            <button class="active" data-target="letters">Surat</button>
+            <button data-target="gallery">Galeri</button>
+            <button data-target="vouchers">Voucher</button>
+            <button data-target="settings">Pengaturan</button>
         </div>
 
         <!-- Letters Section -->
         <div id="section-letters" class="admin-section active">
-            <h3>Manage Letters</h3>
+            <h3>Kelola Surat</h3>
             <form id="form-letter">
                 <input type="hidden" id="letter-id">
-                <input type="text" id="letter-title" placeholder="Title" required>
-                <input type="text" id="letter-author" placeholder="Author" required>
-                <textarea id="letter-body" rows="4" placeholder="Body" required></textarea>
-                <label><input type="checkbox" id="letter-published"> Published</label>
-                <button type="submit">Save Letter</button>
-                <button type="button" id="letter-cancel" style="display:none; background: gray;">Cancel Edit</button>
+                <input type="text" id="letter-title" placeholder="Judul surat" required>
+                <input type="text" id="letter-author" placeholder="Nama pengirim" required>
+                <textarea id="letter-body" rows="4" placeholder="Isi surat" required></textarea>
+                <label><input type="checkbox" id="letter-published"> Tampilkan di situs</label>
+                <button type="submit">Simpan Surat</button>
+                <button type="button" id="letter-cancel" style="display:none; background: gray;">Batal Edit</button>
             </form>
             <div id="letters-list" class="item-list"></div>
         </div>
 
-        <!-- Gallery Section -->
+        <!-- Bagian Galeri -->
         <div id="section-gallery" class="admin-section">
-            <h3>Manage Gallery</h3>
+            <h3>Kelola Galeri</h3>
             <form id="form-gallery">
                 <input type="hidden" id="gallery-id">
                 <input type="file" id="gallery-file" accept="image/*">
-                <input type="text" id="gallery-caption" placeholder="Caption">
-                <input type="text" id="gallery-alt" placeholder="Alt Text" required>
-                <label><input type="checkbox" id="gallery-published"> Published</label>
-                <button type="submit">Save Image</button>
-                <button type="button" id="gallery-cancel" style="display:none; background: gray;">Cancel Edit</button>
+                <input type="text" id="gallery-caption" placeholder="Keterangan foto">
+                <input type="text" id="gallery-alt" placeholder="Teks alternatif untuk foto" required>
+                <label><input type="checkbox" id="gallery-published"> Tampilkan di situs</label>
+                <button type="submit">Simpan Foto</button>
+                <button type="button" id="gallery-cancel" style="display:none; background: gray;">Batal Edit</button>
             </form>
             <div id="gallery-list" class="item-list"></div>
         </div>
 
         <!-- Vouchers Section -->
         <div id="section-vouchers" class="admin-section">
-            <h3>Manage Vouchers</h3>
+            <h3>Kelola Voucher</h3>
             <form id="form-voucher">
                 <input type="hidden" id="voucher-id">
-                <input type="text" id="voucher-title" placeholder="Title" required>
-                <input type="text" id="voucher-desc" placeholder="Description" required>
-                <input type="text" id="voucher-expiry" placeholder="Expiry Text (e.g. 30 days)">
-                <label><input type="checkbox" id="voucher-published"> Published</label>
-                <label><input type="checkbox" id="voucher-used"> Used</label>
-                <button type="submit">Save Voucher</button>
-                <button type="button" id="voucher-cancel" style="display:none; background: gray;">Cancel Edit</button>
+                <input type="text" id="voucher-title" placeholder="Nama voucher" required>
+                <input type="text" id="voucher-desc" placeholder="Deskripsi voucher" required>
+                <input type="text" id="voucher-expiry" placeholder="Masa berlaku (mis. 30 hari)">
+                <label><input type="checkbox" id="voucher-published"> Tampilkan di situs</label>
+                <label><input type="checkbox" id="voucher-used"> Sudah digunakan</label>
+                <button type="submit">Simpan Voucher</button>
+                <button type="button" id="voucher-cancel" style="display:none; background: gray;">Batal Edit</button>
             </form>
             <div id="vouchers-list" class="item-list"></div>
         </div>
 
-        <!-- Settings Section -->
+        <!-- Bagian Pengaturan -->
         <div id="section-settings" class="admin-section">
-            <h3>Site Settings</h3>
+            <h3>Pengaturan Situs</h3>
             <form id="form-settings">
-                <input type="text" id="setting-recipient" placeholder="Recipient Name">
+                <input type="text" id="setting-recipient" placeholder="Nama penerima">
                 <select id="setting-theme">
-                    <option value="blue-dream">Blue Dream</option>
-                    <option value="flower-field">Flower Field</option>
-                    <option value="scrapbook">Scrapbook</option>
-                    <option value="pastel-party">Pastel Party</option>
-                    <option value="midnight">Midnight</option>
+                    <option value="blue-dream">Mimpi Biru</option>
+                    <option value="flower-field">Padang Bunga</option>
+                    <option value="scrapbook">Buku Tempel</option>
+                    <option value="pastel-party">Pesta Pastel</option>
+                    <option value="midnight">Perayaan Malam</option>
                 </select>
-                <label><input type="checkbox" id="setting-guestbook"> Enable Guestbook</label>
-                <button type="submit">Save Settings</button>
+                <label><input type="checkbox" id="setting-guestbook"> Aktifkan buku tamu</label>
+                <button type="submit">Simpan Pengaturan</button>
             </form>
         </div>
 

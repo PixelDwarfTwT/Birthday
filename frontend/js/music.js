@@ -11,8 +11,9 @@ export function initMusicPlayer() {
     const resetButton = document.getElementById('music-reset');
     const trackName = document.getElementById('music-track-name');
     const status = document.getElementById('music-status');
+    const spotifyPlayer = document.getElementById('spotify-player');
 
-    if (!audio || !toggle || !fileInput || !urlForm || !urlInput || !resetButton) return;
+    if (!audio || !toggle || !fileInput || !urlForm || !urlInput || !resetButton || !spotifyPlayer) return;
 
     let objectUrl = null;
     const defaultUrl = (config.DEFAULT_MUSIC_URL || '').trim();
@@ -29,7 +30,7 @@ export function initMusicPlayer() {
         try {
             localStorage.setItem(MUSIC_PREFERENCE_KEY, value);
         } catch {
-            status.textContent = 'This browser could not save the song link. It will still play for this visit.';
+            status.textContent = 'Tautan tidak bisa disimpan di peramban ini, tetapi tetap dapat diputar saat ini.';
         }
     }
 
@@ -38,20 +39,53 @@ export function initMusicPlayer() {
         objectUrl = null;
     }
 
+    function getSpotifyTrackId(source) {
+        try {
+            const url = new URL(source, window.location.href);
+            if (url.hostname !== 'open.spotify.com') return null;
+            return url.pathname.match(/\/track\/([A-Za-z0-9]+)/)?.[1] || null;
+        } catch {
+            return null;
+        }
+    }
+
     function setTrack(source, name) {
         audio.pause();
         releaseObjectUrl();
+        const spotifyTrackId = getSpotifyTrackId(source);
+        if (spotifyTrackId) {
+            audio.removeAttribute('src');
+            audio.load();
+            spotifyPlayer.src = `https://open.spotify.com/embed/track/${spotifyTrackId}?utm_source=generator&theme=0`;
+            spotifyPlayer.hidden = false;
+            toggle.hidden = true;
+            toggle.disabled = true;
+            trackName.textContent = name;
+            status.textContent = 'Putar lagu melalui pemutar Spotify.';
+            return;
+        }
+
+        spotifyPlayer.removeAttribute('src');
+        spotifyPlayer.hidden = true;
+        toggle.hidden = false;
         audio.src = source;
         audio.load();
         if (source.startsWith('blob:')) objectUrl = source;
         trackName.textContent = name;
         toggle.disabled = false;
-        toggle.textContent = 'Play';
-        status.textContent = 'Song ready. Press Play when you are ready.';
+        toggle.textContent = 'Putar';
+        status.textContent = 'Lagu siap. Tekan Putar untuk mulai mendengarkan.';
     }
 
     function getTrackName(source, fallback) {
         try {
+            const spotifyTrackId = getSpotifyTrackId(source);
+            if (spotifyTrackId) {
+                if (spotifyTrackId === getSpotifyTrackId(config.DEFAULT_MUSIC_URL || '')) {
+                    return config.DEFAULT_MUSIC_TITLE || fallback;
+                }
+                return 'Lagu Spotify';
+            }
             const fileName = new URL(source, window.location.href).pathname.split('/').pop();
             return decodeURIComponent(fileName).replace(/\.[^.]+$/, '') || fallback;
         } catch {
@@ -64,9 +98,12 @@ export function initMusicPlayer() {
         audio.removeAttribute('src');
         audio.load();
         releaseObjectUrl();
-        trackName.textContent = 'No song selected yet';
+        spotifyPlayer.removeAttribute('src');
+        spotifyPlayer.hidden = true;
+        toggle.hidden = false;
+        trackName.textContent = 'Belum ada lagu yang dipilih';
         toggle.disabled = true;
-        toggle.textContent = 'Play';
+        toggle.textContent = 'Putar';
         status.textContent = message;
     }
 
@@ -75,7 +112,7 @@ export function initMusicPlayer() {
             try {
                 await audio.play();
             } catch {
-                status.textContent = 'This song could not be played. Try another audio file or direct audio link.';
+                status.textContent = 'Lagu tidak dapat diputar. Coba file audio atau tautan langsung lainnya.';
             }
         } else {
             audio.pause();
@@ -83,21 +120,21 @@ export function initMusicPlayer() {
     });
 
     audio.addEventListener('play', () => {
-        toggle.textContent = 'Pause';
-        status.textContent = 'Now playing';
+        toggle.textContent = 'Jeda';
+        status.textContent = 'Sedang diputar';
     });
     audio.addEventListener('pause', () => {
-        toggle.textContent = 'Play';
+        toggle.textContent = 'Putar';
     });
     audio.addEventListener('error', () => {
-        if (audio.src) status.textContent = 'Could not load this song. Use an audio file or a direct MP3, OGG, or WAV link.';
+        if (audio.src) status.textContent = 'Lagu gagal dimuat. Pilih file MP3, OGG, atau WAV yang valid.';
     });
 
     fileInput.addEventListener('change', () => {
         const file = fileInput.files && fileInput.files[0];
         if (!file) return;
         if (file.type && !file.type.startsWith('audio/')) {
-            status.textContent = 'Please choose an audio file.';
+            status.textContent = 'Silakan pilih file audio.';
             fileInput.value = '';
             return;
         }
@@ -110,7 +147,7 @@ export function initMusicPlayer() {
         event.preventDefault();
         const value = urlInput.value.trim();
         if (!value) {
-            status.textContent = 'Paste a direct link to an audio file first.';
+            status.textContent = 'Masukkan tautan lagu terlebih dahulu.';
             return;
         }
 
@@ -118,16 +155,22 @@ export function initMusicPlayer() {
         try {
             parsedUrl = new URL(value);
         } catch {
-            status.textContent = 'Enter a complete audio URL beginning with https://.';
+            status.textContent = 'Masukkan URL lengkap yang diawali https://.';
             return;
         }
         if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
-            status.textContent = 'The song link must use HTTP or HTTPS.';
+            status.textContent = 'Tautan lagu harus menggunakan HTTP atau HTTPS.';
+            return;
+        }
+
+        const spotifyTrackId = getSpotifyTrackId(parsedUrl.href);
+        if (parsedUrl.hostname === 'open.spotify.com' && !spotifyTrackId) {
+            status.textContent = 'Gunakan tautan Spotify yang langsung menuju ke satu lagu.';
             return;
         }
 
         saveUrl(parsedUrl.href);
-        setTrack(parsedUrl.href, parsedUrl.pathname.split('/').pop() || 'Favorite song');
+        setTrack(parsedUrl.href, getTrackName(parsedUrl.href, spotifyTrackId ? 'Lagu Spotify' : 'Lagu pilihan'));
     });
 
     resetButton.addEventListener('click', () => {
@@ -138,19 +181,19 @@ export function initMusicPlayer() {
         }
         urlInput.value = '';
         if (defaultUrl) {
-            setTrack(defaultUrl, getTrackName(defaultUrl, 'Birthday song'));
+            setTrack(defaultUrl, getTrackName(defaultUrl, 'Lagu ulang tahun'));
         } else {
-            clearTrack('Choose a song to get started.');
+            clearTrack('Pilih lagu untuk mulai.');
         }
     });
 
     const savedUrl = getSavedUrl();
     if (savedUrl && /^https?:\/\//i.test(savedUrl)) {
         urlInput.value = savedUrl;
-        setTrack(savedUrl, getTrackName(savedUrl, 'Favorite song'));
+        setTrack(savedUrl, getTrackName(savedUrl, 'Lagu pilihan'));
     } else if (defaultUrl) {
-        setTrack(defaultUrl, getTrackName(defaultUrl, 'Birthday song'));
+        setTrack(defaultUrl, getTrackName(defaultUrl, 'Lagu ulang tahun'));
     } else {
-        clearTrack('Choose a song to get started.');
+        clearTrack('Pilih lagu untuk mulai.');
     }
 }

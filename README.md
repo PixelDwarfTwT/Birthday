@@ -1,54 +1,59 @@
-# Interactive Birthday Website
+# Situs Ulang Tahun Interaktif
 
-A polished, responsive, interactive birthday website powered by Supabase.
+Situs perayaan ulang tahun yang responsif dan interaktif, dengan Supabase untuk mengelola konten.
 
-## Features
-- **Virtual Cake & Candles**: Blow out candles using microphone or a fallback button.
-- **Balloon Mini-Game**: Pop balloons for fun.
-- **3D Gift Reveal**: Interactive gift box that opens to reveal messages and vouchers.
-- **Birthday Music**: Play a song file, use a direct audio link, or configure a shared default track.
-- **Photo Gallery**: Responsive grid with accessible lightbox.
-- **Letters**: Dedicated reading view for messages from friends/family.
-- **Admin Dashboard**: Secure management of content using Supabase Auth and RLS.
+## Fitur
 
-## Setup Instructions
+- Kue ulang tahun dan lilin yang bisa ditiup dengan mikrofon atau tombol.
+- Permainan memecahkan balon.
+- Hadiah 3D dan voucher.
+- Pemutar musik dengan lagu bawaan Nadin Amizah, **Tawa**.
+- Galeri foto dengan tampilan foto penuh.
+- Surat untuk penerima ulang tahun.
+- Panel admin untuk mengelola konten melalui Supabase Auth dan RLS.
 
-### 1. Supabase Project Setup
-1. Create a new project at [Supabase](https://supabase.com).
-2. Go to SQL Editor and run the `supabase/migrations/001_initial_schema.sql` script to create tables, functions, and RLS policies.
-3. Run the `supabase/seed.sql` script if you want some dummy data.
-4. Go to Storage and create a bucket named `gallery`. Make it public.
-5. In the SQL Editor, run the storage policies defined in `supabase/storage/README.md`.
+## Persiapan Supabase
 
-### 2. Admin Bootstrap
-1. Go to Supabase Authentication -> Users and create a new user (your admin account).
-2. Copy the `User UID` of the newly created user.
-3. Go to SQL Editor and run:
+1. Buat project di [Supabase](https://supabase.com).
+2. Buka SQL Editor, lalu jalankan `supabase/migrations/001_initial_schema.sql`.
+3. Jalankan `supabase/seed.sql` jika ingin memasukkan contoh surat dan voucher.
+4. Di Storage, buat bucket bernama `gallery` dan jadikan publik.
+5. Jalankan kebijakan storage dari `supabase/storage/README.md` di SQL Editor.
+
+## Membuat akun admin
+
+1. Di Supabase, buka Authentication → Users dan buat akun admin.
+2. Salin User UID akun tersebut.
+3. Jalankan perintah berikut di SQL Editor, ganti UID dengan milik akunmu:
+
    ```sql
    INSERT INTO admin_users (user_id) VALUES ('YOUR_USER_UID_HERE');
    ```
 
-### 3. Frontend Configuration
-1. Open `frontend/js/config.js`.
-2. Replace `YOUR_SUPABASE_URL` and `YOUR_SUPABASE_ANON_KEY` with your project's URL and Anon Key (found in Supabase Settings -> API).
+## Konfigurasi frontend
 
-### 4. Local Preview
-You can use any local web server to preview the site. For example, using Python:
+Project Supabase dan kunci anon publik diatur di `frontend/js/config.js`. Gunakan URL dan anon key dari Settings → API di Supabase.
+
+Nama bawaan situs adalah **Fitri Ramadani Arif (Mba Pit)**. Pengaturan nama yang masih memakai nilai contoh seperti “Friend” akan mengikuti nama bawaan ini. Nama lain yang sudah disimpan di Supabase tetap digunakan.
+
+## Mengganti lagu
+
+- Pemutar lagu memakai embed Spotify resmi untuk **Tawa - Nadin Amizah**. Tekan tombol putar pada pemutar Spotify untuk mendengarkan; Spotify mungkin meminta akun atau aplikasi.
+- Untuk mengganti lagu bagi semua pengunjung, ubah `DEFAULT_MUSIC_URL` dan `DEFAULT_MUSIC_TITLE` di `frontend/js/config.js` dengan tautan lagu Spotify yang menuju ke satu track.
+- Untuk memakai file musik sendiri bagi semua pengunjung, letakkan file audio di `frontend/assets/`, lalu isi `DEFAULT_MUSIC_URL` dengan jalur file, misalnya `assets/lagu-favorit.mp3`.
+- Pengunjung juga bisa memilih file audio atau tautan langsung lewat menu **Ganti lagu**. Pilihan tautan hanya tersimpan di browser tersebut.
+
+## Menjalankan secara lokal
+
+Jalankan server web dari folder `frontend`, misalnya dengan Python:
+
 ```bash
 cd frontend
 python -m http.server 8000
 ```
-Open `http://localhost:8000` in your browser.
-Admin dashboard is at `http://localhost:8000/admin/`.
 
-### 5. Choose the birthday song
-1. To preview a song on your own device, open **Change song** on the music player and choose an audio file. The file stays on your device.
-2. To use a song link in your browser, paste a direct link to an audio file such as MP3, OGG, or WAV. This choice is saved in that browser only. Links to Spotify or YouTube pages are not direct audio files.
-3. To set the same default song for everyone, place the audio file in `frontend/assets/` and set `DEFAULT_MUSIC_URL` in `frontend/js/config.js`, for example:
-   ```js
-   DEFAULT_MUSIC_URL: "assets/favorite-song.mp3",
-   ```
-   Include that file when you deploy the `frontend` folder. Browsers require a click on **Play** before music can start.
+Buka `http://localhost:8000/` untuk situs utama atau `http://localhost:8000/admin/` untuk panel admin.
 
-### 6. Deployment
-Deploy the `frontend` folder to GitHub Pages, Vercel, or Netlify. Ensure the deployment settings point to the `frontend` directory as the root.
+## Deployment
+
+Deploy folder `frontend` ke GitHub Pages, Vercel, atau Netlify. Pastikan folder tersebut dipilih sebagai root deployment.

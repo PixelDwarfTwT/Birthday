@@ -18,9 +18,9 @@ export function initShare() {
                 input.remove();
                 if (!copied) throw new Error('Copy command was not available');
             }
-            alert('Link copied to clipboard!');
+            alert('Tautan berhasil disalin!');
         } catch {
-            window.prompt('Copy this birthday link:', url);
+            window.prompt('Salin tautan ulang tahun ini:', url);
         }
     }
 
@@ -30,8 +30,8 @@ export function initShare() {
         if (navigator.share) {
             try {
                 await navigator.share({
-                    title: 'Happy Birthday!',
-                    text: 'Come celebrate on this interactive birthday website.',
+                    title: 'Selamat Ulang Tahun!',
+                    text: 'Yuk, rayakan ulang tahun di situs interaktif ini!',
                     url: url
                 });
             } catch (err) {

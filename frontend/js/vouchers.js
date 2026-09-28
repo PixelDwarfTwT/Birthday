@@ -5,7 +5,7 @@ export function renderVouchers(vouchers) {
     grid.innerHTML = '';
     
     if (vouchers.length === 0) {
-        grid.innerHTML = '<p>No vouchers available.</p>';
+        grid.innerHTML = '<p>Belum ada voucher.</p>';
         return;
     }
 
@@ -20,8 +20,8 @@ export function renderVouchers(vouchers) {
         card.innerHTML = `
             <h3>${escapeHtml(voucher.title)}</h3>
             <p>${escapeHtml(voucher.description)}</p>
-            ${voucher.expiry_text ? `<small>Expires: ${escapeHtml(voucher.expiry_text)}</small>` : ''}
-            ${voucher.is_used ? '<p><strong>(Used)</strong></p>' : ''}
+            ${voucher.expiry_text ? `<small>Berlaku: ${escapeHtml(voucher.expiry_text)}</small>` : ''}
+            ${voucher.is_used ? '<p><strong>(Sudah digunakan)</strong></p>' : ''}
         `;
 
         grid.appendChild(card);

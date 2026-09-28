@@ -5,7 +5,7 @@ export function renderLetters(letters) {
     grid.innerHTML = '';
     
     if (letters.length === 0) {
-        grid.innerHTML = '<p>No letters yet.</p>';
+        grid.innerHTML = '<p>Belum ada surat.</p>';
         return;
     }
 
@@ -21,7 +21,7 @@ export function renderLetters(letters) {
         
         card.innerHTML = `
             <h3>${escapeHtml(letter.title)}</h3>
-            <p>From: ${escapeHtml(letter.author)}</p>
+            <p>Dari: ${escapeHtml(letter.author)}</p>
         `;
 
         card.addEventListener('click', () => openLetter(letter));
@@ -45,7 +45,7 @@ function openLetter(letter) {
     if (!modal) return;
     
     title.textContent = letter.title;
-    author.textContent = `From: ${letter.author}`;
+    author.textContent = `Dari: ${letter.author}`;
     
     // Preserve paragraphs
     body.innerHTML = escapeHtml(letter.body).replace(/\n/g, '<br>');
