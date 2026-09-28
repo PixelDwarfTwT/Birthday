@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#fff7fb">
+    <meta name="description" content="A little interactive birthday celebration, made just for you.">
+    <title>Happy Birthday!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/interactive.css">
+</head>
+<body class="theme-flower-field">
+    <main id="app-container">
+        <section id="intro-section" class="page-section active" aria-labelledby="intro-title">
+            <div class="page-content center-flex">
+                <p class="celebration-eyebrow">A little celebration, made just for you</p>
+                <h1 id="intro-title">Happy Birthday,<br><span class="recipient-name">Friend</span>!</h1>
+                <p class="intro-copy">Welcome to your special birthday celebration!</p>
+
+                <div id="balloon-container" aria-label="Pop the balloons for fun"></div>
+                <p id="balloon-score" aria-live="polite">Score: 0</p>
+
+                <button class="nav-btn next-btn intro-start">Start Celebration <span aria-hidden="true">&rarr;</span></button>
+            </div>
+        </section>
+
+        <section id="cake-section" class="page-section" aria-labelledby="cake-title">
+            <div class="page-content center-flex">
+                <h2 id="cake-title">The Birthday Cake</h2>
+                <div class="cake-container" aria-label="Birthday cake with three candles">
+                    <div class="cake-plate"></div>
+                    <div class="css-cake">
+                        <div class="css-icing"></div>
+                        <div class="css-candles">
+                            <div class="css-candle"><div class="css-flame candle-flame"></div></div>
+                            <div class="css-candle"><div class="css-flame candle-flame"></div></div>
+                            <div class="css-candle"><div class="css-flame candle-flame"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <p id="cake-message" class="hidden cake-message"></p>
+                <div class="candle-actions">
+                    <button id="btn-mic-permission" type="button">Use microphone</button>
+                    <button id="btn-manual-blow" class="manual-blow-btn" type="button">Blow manually</button>
+                </div>
+                <p class="privacy-note">Microphone access is only used to detect a blow. No audio is recorded.</p>
+
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn secondary-btn" type="button">&larr; Back</button>
+                    <button class="nav-btn next-btn" type="button">Open Gift &rarr;</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="gift-section" class="page-section" aria-labelledby="gift-title">
+            <div class="page-content center-flex">
+                <h2 id="gift-title">Your Gift</h2>
+                <div class="gift-container">
+                    <div class="gift-box-3d" id="interactive-gift" tabindex="0" role="button" aria-label="Open your birthday gift">
+                        <div class="gift-face front"></div>
+                        <div class="gift-face back"></div>
+                        <div class="gift-face left"></div>
+                        <div class="gift-face right"></div>
+                        <div class="gift-face bottom"></div>
+                        <div class="gift-lid">
+                            <div class="lid-face top"><div class="ribbon-bow"></div></div>
+                            <div class="lid-face front"></div>
+                            <div class="lid-face back"></div>
+                            <div class="lid-face left"></div>
+                            <div class="lid-face right"></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="gift-hint">Click the box to open it!</p>
+
+                <div id="surprise-content" class="hidden surprise-content">
+                    <h3>Your birthday vouchers</h3>
+                    <div id="vouchers-grid">Loading vouchers...</div>
+                </div>
+
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn secondary-btn" type="button">&larr; Back</button>
+                    <button class="nav-btn next-btn" type="button">Read Letters &rarr;</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="letters-section" class="page-section" aria-labelledby="letters-title">
+            <div class="page-content">
+                <h2 id="letters-title">Letters for You</h2>
+                <div id="letters-grid">Loading letters...</div>
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn secondary-btn" type="button">&larr; Back</button>
+                    <button class="nav-btn next-btn" type="button">View Gallery &rarr;</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery-section" class="page-section" aria-labelledby="gallery-title">
+            <div class="page-content">
+                <h2 id="gallery-title">Photo Gallery</h2>
+                <div id="gallery-grid">Loading gallery...</div>
+                <div class="page-nav page-nav-center">
+                    <button class="nav-btn prev-btn secondary-btn" type="button">&larr; Back</button>
+                    <button id="btn-share" type="button">Share this website</button>
+                </div>
+            </div>
+        </section>
+
+        <footer class="site-footer"><p>Made with love</p></footer>
+    </main>
+
+    <aside class="music-dock" aria-label="Birthday music player">
+        <audio id="birthday-song" loop preload="metadata"></audio>
+        <div class="music-dock__heading">
+            <span class="music-note" aria-hidden="true">&#9835;</span>
+            <div class="music-dock__track">
+                <strong>Birthday soundtrack</strong>
+                <p id="music-track-name">No song selected yet</p>
+            </div>
+        </div>
+        <div class="music-dock__controls">
+            <button id="music-toggle" class="music-play-btn" type="button" disabled>Play</button>
+            <details class="music-settings">
+                <summary>Change song</summary>
+                <div class="music-settings__body">
+                    <label class="music-file-label" for="music-file">Choose an audio file</label>
+                    <input id="music-file" class="visually-hidden" type="file" accept="audio/*">
+                    <form id="music-url-form">
+                        <label for="music-url">Or paste a direct audio link</label>
+                        <input id="music-url" type="url" placeholder="https://example.com/song.mp3" autocomplete="url">
+                        <button type="submit">Use link</button>
+                    </form>
+                    <button id="music-reset" class="music-reset-btn" type="button">Restore default song</button>
+                </div>
+            </details>
+        </div>
+        <p id="music-status" class="music-status" aria-live="polite">Choose a song to get started.</p>
+    </aside>
+
+    <div id="letter-modal" class="modal-overlay">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="letter-title">
+            <button id="letter-close" class="close-btn" type="button" aria-label="Close letter">&times;</button>
+            <h2 id="letter-title" class="modal-title"></h2>
+            <p id="letter-author" class="modal-author"></p>
+            <div id="letter-body" class="modal-letter-body"></div>
+        </div>
+    </div>
+
+    <div id="lightbox-overlay" class="modal-overlay">
+        <div class="modal-content lightbox-content" role="dialog" aria-modal="true" aria-label="Photo viewer">
+            <button id="lightbox-close" class="close-btn lightbox-close" type="button" aria-label="Close image">&times;</button>
+            <img id="lightbox-img" src="" alt="">
+            <p id="lightbox-caption"></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
