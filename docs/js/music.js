@@ -12,11 +12,34 @@ export function initMusicPlayer() {
     const trackName = document.getElementById('music-track-name');
     const status = document.getElementById('music-status');
     const spotifyPlayer = document.getElementById('spotify-player');
+    const musicDock = document.getElementById('music-dock');
+    const collapseButton = document.getElementById('music-collapse');
+    const reopenButton = document.getElementById('music-reopen');
 
-    if (!audio || !toggle || !fileInput || !urlForm || !urlInput || !resetButton || !spotifyPlayer) return;
+    if (!audio || !toggle || !fileInput || !urlForm || !urlInput || !resetButton || !spotifyPlayer || !musicDock || !collapseButton || !reopenButton) return;
 
     let objectUrl = null;
     const defaultUrl = (config.DEFAULT_MUSIC_URL || '').trim();
+
+    function collapseMusicDock() {
+        // Keep the Spotify iframe mounted and playing; only move its panel offscreen.
+        musicDock.classList.add('is-collapsed');
+        musicDock.inert = true;
+        musicDock.setAttribute('aria-hidden', 'true');
+        reopenButton.hidden = false;
+        reopenButton.focus();
+    }
+
+    function expandMusicDock() {
+        musicDock.classList.remove('is-collapsed');
+        musicDock.inert = false;
+        musicDock.removeAttribute('aria-hidden');
+        reopenButton.hidden = true;
+        collapseButton.focus();
+    }
+
+    collapseButton.addEventListener('click', collapseMusicDock);
+    reopenButton.addEventListener('click', expandMusicDock);
 
     function getSavedUrl() {
         try {

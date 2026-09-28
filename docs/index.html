@@ -117,7 +117,7 @@
         <footer class="site-footer"><p>Dibuat dengan cinta</p></footer>
     </main>
 
-    <aside class="music-dock" aria-label="Pemutar musik ulang tahun">
+    <aside id="music-dock" class="music-dock" aria-label="Pemutar musik ulang tahun">
         <audio id="birthday-song" loop preload="metadata"></audio>
         <div class="music-dock__heading">
             <span class="music-note" aria-hidden="true">&#9835;</span>
@@ -125,6 +125,7 @@
                 <strong>Lagu untuk Mba Pit</strong>
                 <p id="music-track-name">Belum ada lagu yang dipilih</p>
             </div>
+            <button id="music-collapse" class="music-collapse-btn" type="button" aria-label="Kecilkan pemutar lagu" title="Kecilkan pemutar lagu">&minus;</button>
         </div>
         <div class="music-dock__controls">
             <button id="music-toggle" class="music-play-btn" type="button" disabled>Putar</button>
@@ -145,6 +146,9 @@
         <p id="music-status" class="music-status" aria-live="polite">Putar lagu langsung dari Spotify.</p>
         <iframe id="spotify-player" class="spotify-player" title="Putar Tawa oleh Nadin Amizah di Spotify" src="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" hidden></iframe>
     </aside>
+    <button id="music-reopen" class="music-reopen-btn" type="button" aria-controls="music-dock" aria-expanded="false" hidden>
+        <span aria-hidden="true">&#9835;</span> Buka pemutar lagu
+    </button>
 
     <div id="letter-modal" class="modal-overlay">
         <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="letter-title">
