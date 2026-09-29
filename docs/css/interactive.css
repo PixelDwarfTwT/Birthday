@@ -42,6 +42,35 @@
     transition: transform 0.25s ease;
 }
 
+/* Keep the cake visible while a browser is mixing cached HTML and CSS versions. */
+.css-cake::before,
+.css-cake::after {
+    content: "";
+    position: absolute;
+    border-radius: 16px 16px 25px 25px;
+    pointer-events: none;
+}
+
+.css-cake::before {
+    right: 10px;
+    bottom: 0;
+    left: 10px;
+    height: 74px;
+    z-index: 0;
+    background: linear-gradient(90deg, #a82d61 0%, #d94c82 12%, #f587ae 38%, #f9a9c4 54%, #e76398 82%, #a52c60 100%);
+    box-shadow: inset 0 10px 10px rgba(255, 255, 255, 0.23), inset 0 -14px 16px rgba(100, 18, 53, 0.3), 0 9px 13px rgba(89, 27, 57, 0.2);
+}
+
+.css-cake::after {
+    right: 50px;
+    bottom: 54px;
+    left: 50px;
+    height: 69px;
+    z-index: 1;
+    background: linear-gradient(90deg, #a82d61 0%, #dc5689 13%, #fa9cbd 43%, #f8b4cb 56%, #e26194 85%, #a52c60 100%);
+    box-shadow: inset 0 10px 10px rgba(255, 255, 255, 0.23), inset 0 -14px 16px rgba(100, 18, 53, 0.3), 0 9px 13px rgba(89, 27, 57, 0.2);
+}
+
 .cake-tier {
     position: absolute;
     border-radius: 16px 16px 25px 25px;
