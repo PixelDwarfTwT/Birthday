@@ -9,7 +9,8 @@
     transform-origin: center bottom;
     animation: cake-float 3s ease-in-out infinite;
     transition: filter 0.25s ease;
-    perspective: 700px;
+    perspective: 800px;
+    perspective-origin: 50% 45%;
 }
 
 .cake-container:not(.is-extinguished):hover {
@@ -17,7 +18,7 @@
 }
 
 .cake-container:not(.is-extinguished):hover .css-cake {
-    transform: translateY(-5px);
+    transform: rotateX(-15deg) rotateY(45deg) translateY(-5px);
 }
 
 .cake-container:focus-visible {
@@ -38,8 +39,11 @@
     height: 148px;
     background: transparent;
     transform-style: preserve-3d;
+    transform: rotateX(-15deg) rotateY(25deg);
+    transform-origin: 50% 74%;
     z-index: 2;
-    transition: transform 0.25s ease;
+    transition: transform 0.45s cubic-bezier(0.2, 0.75, 0.25, 1);
+    filter: drop-shadow(0 10px 12px rgba(89, 27, 57, 0.16));
 }
 
 /* Keep the cake visible while a browser is mixing cached HTML and CSS versions. */
@@ -191,7 +195,6 @@
     border: 1px solid rgba(255, 255, 255, 0.9);
     border-radius: 50%;
     box-shadow: inset 0 4px 6px rgba(255, 255, 255, 0.9), 0 8px 14px rgba(40, 47, 67, 0.24);
-    transform: rotateX(10deg);
     z-index: 1;
 }
 
@@ -256,9 +259,9 @@
 }
 
 @keyframes cake-bounce {
-    0%, 100% { transform: translateY(0) rotate(0); }
-    32% { transform: translateY(-12px) rotate(-2deg); }
-    68% { transform: translateY(3px) rotate(1deg); }
+    0%, 100% { transform: rotateX(-15deg) rotateY(25deg) translateY(0) rotateZ(0); }
+    32% { transform: rotateX(-15deg) rotateY(25deg) translateY(-12px) rotateZ(-2deg); }
+    68% { transform: rotateX(-15deg) rotateY(25deg) translateY(3px) rotateZ(1deg); }
 }
 
 @keyframes flame-out {
